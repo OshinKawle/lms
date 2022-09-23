@@ -1,0 +1,1 @@
+<?php /**PATH F:\xampp\htdocs\affixcity\resources\views/vendor/pagination/bootstrap-4.blade.php ENDPATH**/ ?>

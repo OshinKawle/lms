@@ -1,0 +1,1 @@
+<?php /**PATH /home/profglobal/public_html/demoafficity/resources/views/vendor/pagination/bootstrap-4.blade.php ENDPATH**/ ?>
