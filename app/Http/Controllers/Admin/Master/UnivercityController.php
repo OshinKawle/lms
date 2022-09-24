@@ -17,14 +17,20 @@ class UnivercityController extends Controller
       # Define Base view
     protected $view = 'admin.master.university.';
 
+    #Bind Univercity model
+    protected $univercity;
+
     /**
       * Defining the default constructor for controller
       *
       */
 
     public function __construct(
+                        Univercity $univercity  
                             )
+                        
     {
+        $this->univercity  = $univercity;
         
     }
 
@@ -33,13 +39,13 @@ class UnivercityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request)   
     {
         try
         {
-            
+             $details['lists'] = $this->univercity->orderBy('id', 'DESC')->paginate(50);
             #render view
-            return view($this->view.'index');
+            return view($this->view.'index',$details);
         }catch(\Exception $ex)
         {
             toastr()->success($ex->getMessage());
@@ -78,7 +84,6 @@ class UnivercityController extends Controller
         try{
             
 
-
             $validate = Validator::make($request->all(), [
                     'name' => 'required',
                    
@@ -101,7 +106,7 @@ class UnivercityController extends Controller
             return back()->with('error', $ex->getMessage());
         }
            
-        return redirect('home');
+ 
     }
 
     /**
@@ -126,8 +131,10 @@ class UnivercityController extends Controller
     {
         try
         {
+             $details['detail'] = $this->univercity->whereId($id)->first();
+
             #render view
-            return view($this->view.'edit');
+            return view($this->view.'edit',$details);
         }catch(\Exception $ex)
         {
             toastr()->success($ex->getMessage());
@@ -144,8 +151,27 @@ class UnivercityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-    }
+        try{
+
+            $validate = Validator::make($request->all(), [
+                'name' => 'required',
+            ]);
+
+            if($validate->fails()){
+                 toastr()->error($validate->messages());
+                return redirect()->back()->withInput();
+            }
+    
+            $univercity =  Univercity::find($id);
+            $univercity->name= $request->name;
+            $univercity->save();
+             toastr()->success('Added Successfully');
+            return redirect('/master/university');
+        }catch(\Exception $ex)
+        {
+            toastr()->success($ex->getMessage());
+            return back()->with('error', $ex->getMessage());
+        }    }
 
     /**
      * Remove the specified resource from storage.
@@ -153,8 +179,13 @@ class UnivercityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
-        //
+        $caste = $this->Univercity::find($id);
+        $caste ->delete();
+         toastr()->success('You are successfully Deleted');
+       return redirect('/master/university');
     }
-}
+    }
+
+
