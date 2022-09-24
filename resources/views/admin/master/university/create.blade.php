@@ -32,14 +32,15 @@
                     <div class="tab-pane fade show active" id="v-pills-uni" role="tabpanel"
                         aria-labelledby="v-pills-uni-tab" tabindex="0">
                         <div class="formbd">
-                            <form action="{{url('master/university')}}" method="POST">
+                            <form action="{{url('master/university')}}" method="POST" onsubmit="return validateForm('addsstatus')">
                                 @csrf
+                                
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div>
                                             <p style="margin-bottom: 5px;"><strong>University</strong></p>
-                                            <input class="form-control" type="text" name="name"
-                                                placeholder="Enter University">
+                                            <input class="form-control input-mandatory" type="text" name="name"
+                                                placeholder="Enter University ">
                                         </div>
                                     </div>
 

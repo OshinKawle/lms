@@ -46,19 +46,31 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-
+                                @php 
+                                  $page=1;
+                                  if(Request::input('page'))
+                                  $page=Request::input('page');
+                                  $sort = $lists->perPage();
+                               @endphp
                                 <tbody>
+                                   @foreach($lists as $key=>$list)
                                     <tr>
-                                        <td>1.</td>
-                                        <td>Dr.D.Y.Patil University Pune</td>
+                                        <td>{{ $sort*($page-1)+($key+1) }}</td>
+                                        <td>{{$list->name}}</td>
                                         <td>
                                             <a href="" class="btn btn-success btn-sm">Active</a>
                                         </td>
                                         <td>
-                                           <a href="{{ url('master/university/{{ $Univercity->name}}/edit') }}" class="btn btn-warning btn-sm">Edit</a>  <a href=""
-                                                class="btn btn-danger btn-sm">Delete</a>
-                                        </td>
+                                           <a href="{{url('master/university/'.$list->id.'/edit')}}" class="btn btn-warning btn-sm">Edit</a> </td>
+                                        @can('user-delete')
+                                        <td><a href="{{url('master/university/delete/'.$list->id)}}" 
+                                            class="btn btn-danger btn-sm"
+                                         onclick="return confirm('Do you really Want to Delete the  User ?')">DELETE</a></td>
+                                        @endcan
+                                       
+                                        
                                     </tr>
+                                   @endforeach
 
 
                                 </tbody>
